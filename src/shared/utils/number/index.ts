@@ -1,0 +1,1 @@
+export {moneyFormatter} from './money-formatter'

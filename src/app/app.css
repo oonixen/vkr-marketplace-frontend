@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --swiper-theme-color: #232323;
+  }
+  * {
+    @apply font-roboto;
+    @apply text-base;
+    @apply font-light;
+  }
+  html, body {
+    overflow-x: clip;
+  }
+  body {
+    position: relative;
+  }
+  button, a, img, svg {
+    user-select: none;
+  }
+}
+
+@layer utilities {
+  @layer responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+  }
+}

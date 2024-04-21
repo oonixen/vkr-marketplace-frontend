@@ -1,0 +1,1 @@
+export { initProfile } from './model'

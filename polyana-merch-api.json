@@ -1,0 +1,656 @@
+{
+    "openapi": "3.1.0",
+    "x-stoplight": {
+        "id": "0drupk3lm5htn"
+    },
+    "info": {
+        "title": "polyana-merch-api",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000"
+        }
+    ],
+    "paths": {
+        "/auth/send-code": {
+            "post": {
+                "summary": "Request verify code",
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "expirationTime": {
+                                            "type": "integer",
+                                            "x-stoplight": {
+                                                "id": "b88mvkqxgdmsf"
+                                            },
+                                            "example": 180000
+                                        }
+                                    },
+                                    "required": [
+                                        "expirationTime"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "remainingSeconds": {
+                                            "type": "integer",
+                                            "x-stoplight": {
+                                                "id": "f2lpavurbre9e"
+                                            },
+                                            "example": 30
+                                        }
+                                    },
+                                    "required": [
+                                        "remainingSeconds"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "post-auth-send-code",
+                "x-stoplight": {
+                    "id": "ii48rhojb4cxq"
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "phone": {
+                                        "$ref": "#/components/schemas/phone-string",
+                                        "x-stoplight": {
+                                            "id": "iit9dmkm0yhfl"
+                                        }
+                                    },
+                                    "card": {
+                                        "type": "string",
+                                        "x-stoplight": {
+                                            "id": "j9j18ag52tfrn"
+                                        },
+                                        "example": "123456789"
+                                    },
+                                    "guardId": {
+                                        "type": "string",
+                                        "x-stoplight": {
+                                            "id": "nqti8biptul0z"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "phone",
+                                    "card",
+                                    "guardId"
+                                ]
+                            }
+                        }
+                    },
+                    "description": ""
+                },
+                "x-internal": true
+            }
+        },
+        "/auth/verify-code": {
+            "post": {
+                "summary": "Send verify code",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "access": {
+                                            "type": "string",
+                                            "x-stoplight": {
+                                                "id": "qxokbd9n5v6kf"
+                                            }
+                                        },
+                                        "refresh": {
+                                            "type": "string",
+                                            "x-stoplight": {
+                                                "id": "qzsiswjf7xfo0"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "access",
+                                        "refresh"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "post-auth-verify-code",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "phone": {
+                                        "$ref": "#/components/schemas/phone-string"
+                                    },
+                                    "card": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "x-stoplight": {
+                                            "id": "mbkb778jmwa98"
+                                        },
+                                        "example": "1234"
+                                    }
+                                },
+                                "required": [
+                                    "phone",
+                                    "card",
+                                    "code"
+                                ]
+                            }
+                        }
+                    },
+                    "description": ""
+                },
+                "x-stoplight": {
+                    "id": "2ks2jp4whrfz4"
+                },
+                "x-internal": true,
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/refresh-token": {
+            "post": {
+                "summary": "Refresh token",
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "access": {
+                                            "type": "string"
+                                        },
+                                        "refresh": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "access",
+                                        "refresh"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                },
+                "operationId": "post-auth-refresh-token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "refresh": {
+                                        "type": "string",
+                                        "x-stoplight": {
+                                            "id": "e4cwkoy8cy28n"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "refresh"
+                                ]
+                            }
+                        }
+                    },
+                    "description": ""
+                },
+                "x-stoplight": {
+                    "id": "i6ry7fmjxmxw6"
+                },
+                "x-internal": true
+            },
+            "parameters": []
+        },
+        "/user": {
+            "get": {
+                "summary": "Get user info",
+                "operationId": "get-user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "phone": {
+                                            "$ref": "#/components/schemas/phone-string",
+                                            "x-stoplight": {
+                                                "id": "ez2pc9gusql2b"
+                                            }
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "x-stoplight": {
+                                                "id": "rxgoeddlh0xp9"
+                                            }
+                                        },
+                                        "card": {
+                                            "type": "string",
+                                            "x-stoplight": {
+                                                "id": "thlnmrwpulhzo"
+                                            }
+                                        },
+                                        "balance": {
+                                            "type": "integer",
+                                            "x-stoplight": {
+                                                "id": "yxgbi13tuwwqq"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "phone",
+                                        "name",
+                                        "card",
+                                        "balance"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "v9x1zma9zsd27"
+                },
+                "x-internal": true
+            }
+        },
+        "/stores": {
+            "get": {
+                "summary": "Get store list",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "x-stoplight": {
+                                            "id": "0acovekez3jzw"
+                                        },
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "$ref": "#/components/schemas/uuid-string",
+                                                "x-stoplight": {
+                                                    "id": "dyfk79bybwt3w"
+                                                }
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "x-stoplight": {
+                                                    "id": "3j20smrxqusu5"
+                                                }
+                                            },
+                                            "address": {
+                                                "type": "string",
+                                                "x-stoplight": {
+                                                    "id": "zy72ckue908b2"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "operationId": "get-stores",
+                "x-stoplight": {
+                    "id": "6dduq58rx4dnr"
+                },
+                "x-internal": true
+            }
+        },
+        "/goods": {
+            "get": {
+                "summary": "Get product list",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "x-stoplight": {
+                                            "id": "jid5j49qkins1"
+                                        },
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "$ref": "#/components/schemas/uuid-string",
+                                                "x-stoplight": {
+                                                    "id": "5s4v7qw3drs5d"
+                                                },
+                                                "description": "group id"
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "x-stoplight": {
+                                                    "id": "p3638g1pjxvcf"
+                                                }
+                                            },
+                                            "goods": {
+                                                "type": "array",
+                                                "x-stoplight": {
+                                                    "id": "az1a7dnmhov5e"
+                                                },
+                                                "items": {
+                                                    "$ref": "#/components/schemas/good",
+                                                    "x-stoplight": {
+                                                        "id": "3wo486lw7sqh5"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "required": [
+                                            "id",
+                                            "title",
+                                            "goods"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "operationId": "get-goods",
+                "x-stoplight": {
+                    "id": "7y2wgyvbp4rrp"
+                },
+                "x-internal": true
+            }
+        },
+        "/order": {
+            "post": {
+                "summary": "Create order",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "x-stoplight": {
+                                                "id": "goz0mk9wlwj27"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "operationId": "post-order",
+                "x-stoplight": {
+                    "id": "5lhdm46h5dsxu"
+                },
+                "x-internal": true,
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "store": {
+                                        "$ref": "#/components/schemas/uuid-string",
+                                        "x-stoplight": {
+                                            "id": "f7gf6i6wdv4m1"
+                                        }
+                                    },
+                                    "comment": {
+                                        "type": "string",
+                                        "x-stoplight": {
+                                            "id": "4bb1q6jhytag6"
+                                        }
+                                    },
+                                    "goods": {
+                                        "type": "array",
+                                        "x-stoplight": {
+                                            "id": "62xfl06g0e2ka"
+                                        },
+                                        "items": {
+                                            "x-stoplight": {
+                                                "id": "c9tk9ujygqcvz"
+                                            },
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "$ref": "#/components/schemas/uuid-string",
+                                                    "x-stoplight": {
+                                                        "id": "nivj5gt2yxg93"
+                                                    }
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "x-stoplight": {
+                                                        "id": "hv2com3qjyu9c"
+                                                    }
+                                                },
+                                                "modifier": {
+                                                    "x-stoplight": {
+                                                        "id": "58mxtl21512dq"
+                                                    },
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "integer",
+                                                    "x-stoplight": {
+                                                        "id": "wxpdibyn4vxf8"
+                                                    }
+                                                },
+                                                "amount": {
+                                                    "type": "integer",
+                                                    "x-stoplight": {
+                                                        "id": "rnnd3tdzz8h1l"
+                                                    }
+                                                },
+                                                "images": {
+                                                    "type": [
+                                                        "array"
+                                                    ],
+                                                    "x-stoplight": {
+                                                        "id": "noluid2ennl2q"
+                                                    },
+                                                    "items": {
+                                                        "x-stoplight": {
+                                                            "id": "g21d3gch0f6cl"
+                                                        },
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "id",
+                                                "name",
+                                                "price",
+                                                "amount",
+                                                "images"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "store",
+                                    "goods"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "good": {
+                "title": "good",
+                "x-stoplight": {
+                    "id": "zreoqqm6wvtbn"
+                },
+                "type": "object",
+                "x-internal": true,
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/uuid-string",
+                        "x-stoplight": {
+                            "id": "d1bpahhgbps8a"
+                        }
+                    },
+                    "name": {
+                        "type": "string",
+                        "x-stoplight": {
+                            "id": "j8o99ivoupc5f"
+                        }
+                    },
+                    "info": {
+                        "type": "string",
+                        "x-stoplight": {
+                            "id": "r7c7q7ycm1zi9"
+                        }
+                    },
+                    "price": {
+                        "type": "integer",
+                        "x-stoplight": {
+                            "id": "9f166mi5nzdn3"
+                        }
+                    },
+                    "images": {
+                        "type": "array",
+                        "x-stoplight": {
+                            "id": "4l603fke3le4z"
+                        },
+                        "items": {
+                            "x-stoplight": {
+                                "id": "6twealyt4yjee"
+                            },
+                            "type": "string"
+                        }
+                    },
+                    "modifiers": {
+                        "type": "array",
+                        "x-stoplight": {
+                            "id": "bcxtfok1ur0c3"
+                        },
+                        "items": {
+                            "x-stoplight": {
+                                "id": "r9616h8lfud8u"
+                            },
+                            "type": "string",
+                            "example": "XXL"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "info",
+                    "price",
+                    "images",
+                    "modifiers"
+                ]
+            },
+            "uuid-string": {
+                "title": "uuid-string",
+                "x-stoplight": {
+                    "id": "s6n19ltiaa9ky"
+                },
+                "type": "string",
+                "x-internal": true,
+                "minLength": 36,
+                "maxLength": 36,
+                "example": "d1ab87fd-8777-f724-9ec8-2fdef4bce648"
+            },
+            "phone-string": {
+                "title": "phone-string",
+                "x-stoplight": {
+                    "id": "sxzrfvf8tpmgw"
+                },
+                "type": "string",
+                "x-internal": true,
+                "minLength": 11,
+                "example": "79000000001",
+                "maxLength": 11
+            }
+        }
+    },
+    "x-internal": true
+}
